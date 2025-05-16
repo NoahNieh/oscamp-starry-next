@@ -1,3 +1,4 @@
-/musl/busybox echo "#### OS COMP TEST GROUP START basic-musl ####"
-/musl/basic/run-all.sh
-/musl/busybox echo "#### OS COMP TEST GROUP END basic-musl ####"
+/musl/basic_testcode.sh
+/musl/libctest_testcode.sh
+/musl/lua_testcode.sh
+/musl/busybox_testcode.sh
