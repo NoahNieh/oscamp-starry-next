@@ -2,7 +2,7 @@
 /musl/libctest_testcode.sh
 /musl/lua_testcode.sh
 /musl/busybox_testcode.sh
-/glibc/basic_testcode.sh
-/glibc/libctest_testcode.sh
-/glibc/lua_testcode.sh
-/glibc/busybox_testcode.sh
+/musl/busybox sh /glibc/basic_testcode.sh
+/musl/busybox sh /glibc/libctest_testcode.sh
+/musl/busybox sh /glibc/lua_testcode.sh
+/musl/busybox sh /glibc/busybox_testcode.sh
