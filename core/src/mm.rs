@@ -50,7 +50,7 @@ pub fn map_trampoline(aspace: &mut AddrSpace) -> AxResult {
 ///
 /// # Returns
 /// - The entry point of the user app.
-fn map_elf(uspace: &mut AddrSpace, elf: &ElfFile) -> AxResult<(VirtAddr, [AuxvEntry; 16])> {
+fn map_elf(uspace: &mut AddrSpace, elf: &ElfFile) -> AxResult<(VirtAddr, [AuxvEntry; 17])> {
     let uspace_base = uspace.base().as_usize();
     let elf_parser = ELFParser::new(
         elf,
@@ -149,15 +149,17 @@ pub fn load_user_app(
                 .map_err(|_| AxError::InvalidData)?,
         )?;
 
-        if interp_path == "/lib/ld-linux-riscv64-lp64.so.1"
-            || interp_path == "/lib64/ld-linux-loongarch-lp64d.so.1"
-            || interp_path == "/lib64/ld-linux-x86-64.so.2"
-            || interp_path == "/lib/ld-linux-aarch64.so.1"
-            || interp_path.starts_with("/lib/ld-musl-")
+        info!("interp_path: {}", interp_path);
+
+        if interp_path.starts_with("/lib/ld-musl-")
             || interp_path.starts_with("/lib64/ld-musl-")
         {
             // TODO: Use soft link
             interp_path = String::from("/musl/lib/libc.so");
+        } else if interp_path.starts_with("/lib/ld-linux-")
+            || interp_path.starts_with("/lib64/ld-linux-")
+        {
+            interp_path = String::from("/glibc/lib/") + interp_path.split("/").last().unwrap();
         }
 
         // Set the first argument to the path of the user app.
